@@ -20,6 +20,18 @@ let rec print_set =
 (* if isIn <> true then print_string "Test 1 failed: \"5\" should be in the list!"; print_newline ();; *)
 
 (* vplus test cases *)
+let result = vplus [] [] in
+  let vout = (result = []) in 
+    test (vout = true) "Test failed: result should be [].";;
+
+let result = vplus [1.0] [] in
+  let vout = (result = [1.0]) in 
+    test (vout = true) "Test failed: result should be [1.0].";;
+
+let result = vplus [] [2.5] in
+  let vout = (result = [2.5]) in 
+    test (vout = true) "Test failed: result should be [1.0].";;
+
 let result = vplus [1.;2.;3.] [4.;5.;6.] in
   let vout = (result = [5.;7.;9.]) in 
     test (vout = true) "Test failed: result should be [5;7;9].";;
@@ -27,20 +39,52 @@ let result = vplus [1.;2.;3.] [4.;5.;6.] in
 let passed = print_string "Test cases for 'vplus' passed!";;
 
 (* mplus test cases *)
+let result = mplus [[];[]] [[];[]] in
+  let vout = (result = [[];[]]) in 
+    test (vout = true) "Test failed: result should be [[];[]].";;
+
 let result = mplus [[1.;2.;3.];[1.;2.;3.]] [[1.;2.;3.];[1.;2.;3.]] in
   let vout = (result = [[2.;4.;6.];[2.;4.;6.]]) in 
-    test (vout = true) "Test failed: result should be [2.;4.;6.].";;
+    test (vout = true) "Test failed: result should be [[2.;4.;6.];[2.;4.;6.]].";;
+
+let result = mplus [[];[]] [[1.;2.];[1.;2.]] in
+  let vout = (result = [[1.;2.];[1.;2.]]) in 
+    test (vout = true) "Test failed: result should be [[1.;2.];[1.;2.]].";;
 
 let passed = print_string "Test cases for 'mplus' passed!";;
 
 (* dotprod test cases *)
+let result = dotprod [] [] in
+  let vout = (result = 0.) in 
+    test (vout = true) "Test failed: result should be 0.";;
+
+let result = dotprod [] [1.5; 2.0] in
+  let vout = (result = 0.) in 
+    test (vout = true) "Test failed: result should be 0.";;
+
 let result = dotprod [1.;2.;3.] [1.;2.;3.] in
   let vout = (result = 14.) in 
     test (vout = true) "Test failed: result should be 14.";;
 
+let result = dotprod [1.5;2.5] [1.5;2.6] in
+  let vout = (result = 8.75) in 
+    test (vout = true) "Test failed: result should be 8.75";;
+
 let passed = print_string "Test cases for 'dotprod' passed!";;
 
 (* transpose test cases *)
+let result = transpose [] in
+  let vout = (result = []) in 
+    test (vout = true) "Test failed: result should be []";;
+
+let result = transpose [[1.;2.;3.];[4.;5.;6.];[7.;8.;9.]] in
+  let vout = (result = [[1.;4.;7.];[2.;5.;8.];[3.;6.;9.]]) in 
+    test (vout = true) "Test failed: result should be [[1.;4.;7.];[2.;5.;8.];[3.;6.;9.]]";;
+
+let result = transpose [[1.];[2.];[3.]] in
+  let vout = (result = [[1.;2.;3.]]) in 
+    test (vout = true) "Test failed: result should be [[1.;2.;3.]]";;
+
 let result = transpose [[1.;2.;3.]] in
   let vout = (result = [[1.];[2.];[3.]]) in 
     test (vout = true) "Test failed: result should be [[1.];[2.];[3.]]";;
@@ -48,6 +92,14 @@ let result = transpose [[1.;2.;3.]] in
 let passed = print_string "Test cases for 'transpose' passed!";;
 
 (* mmult test cases *)
+let result = mmult [] [] in
+  let vout = (result = []) in 
+    test (vout = true) "Test failed: result should be []";;
+
+let result = mmult [[1.;2.;3.]] [[1.];[2.];[3.]] in
+  let vout = (result = [[14.]]) in 
+    test (vout = true) "Test failed: result should be [14.]";;
+
 let result = mmult [[1.;2.];[3.;4.]] [[5.;6.];[7.;8.]] in
   let vout = (result = [[19.;22.];[43.;50.]]) in 
     test (vout = true) "Test failed: result should be [[19.;22.];[43.;50.]]";;

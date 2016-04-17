@@ -4,6 +4,9 @@ exception ImplementMe
   Resources Used:
   http://caml.inria.fr/pub/docs/manual-ocaml/libref/Pervasives.html
   http://caml.inria.fr/pub/docs/manual-ocaml/libref/List.html
+  http://caml.inria.fr/pub/docs/manual-ocaml/libref/index_exceptions.html
+  https://github.com/SaswatPadhi/S16_TA_CS131
+  Professor Millstein's class notes from Week 2 & Week 3 on Trees\
 *)
 
 (* Problem 1: Vectors and Matrices *)
