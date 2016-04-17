@@ -192,13 +192,13 @@ let rec (dswap : exp list -> exp list) =
     match stack with
       []        -> stack
     | [h]       -> stack
-    | h1::h2::t -> stack
+    | h1::h2::t -> h2::h1::t
 ;;
 
 (* helper function to create the BinOp tuple *)
 let (create_exp : exp -> exp -> op -> exp) =
   fun x y o ->
-    BinOp(x, o, y)
+    BinOp(y, o, x)
 ;;
 
 (* helper function to perform arithmetic calculation *)

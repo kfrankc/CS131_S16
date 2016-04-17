@@ -113,13 +113,21 @@ let expr1_2 = [Push 1.; Push 2.; Calculate Plus; Push 3.; Calculate Times];;
 (* expr2_*: 1 - (2 + 3) *)
 let expr2_1 = BinOp(Num 1.0, Minus, BinOp(Num 2.0, Plus, Num 3.0));;
 let expr2_2 = [Push 2.; Push 3.; Calculate Plus; Push 1.; Swap; Calculate Minus];;
-(* expr3_*: (1 + 2) * (3 - (4 / 2)) *)
+(* expr3_*: (1 + 2) - (3 - (4 / 2)) *)
 let expr3_1 = BinOp(BinOp(Num 1., Plus, Num 2.), Minus, BinOp(Num 3., Minus, BinOp(Num 4., Divide, Num 2.)));;
 let expr3_2 = [Push 3.; Push 4.; Push 2.; Calculate Divide; Calculate Minus; Push 1.; Push 2.; Calculate Plus; Swap; Calculate Minus];;
 
 let result = evalExp expr1_1 in
   let vout = (result = 9.) in 
-    test (vout = true) "Test failed: result should be 9.";;
+    test (vout = true) "Test failed: result should be 9.0";;
+
+let result = evalExp expr2_1 in
+  let vout = (result = -4.) in 
+    test (vout = true) "Test failed: result should be -4.0";;
+
+let result = evalExp expr3_1 in
+  let vout = (result = 2.) in 
+    test (vout = true) "Test failed: result should be 2.0";;
 
 let passed = print_string "Test cases for 'evalExp' passed!";;
 
@@ -128,6 +136,14 @@ let result = execute expr1_2 in
   let vout = (result = 9.0) in 
     test (vout = true) "Test failed: result should be 9.0";;
 
+let result = execute expr2_2 in
+  let vout = (result = -4.) in 
+    test (vout = true) "Test failed: result should be -4.0";;
+
+let result = execute expr3_2 in
+  let vout = (result = 2.) in  
+    test (vout = true) "Test failed: result should be 2.0";;
+
 let passed = print_string "Test cases for 'execute' passed!";;
 
 (* compile test cases *)
@@ -135,12 +151,28 @@ let result = compile expr1_1 in
   let vout = (result = [Push 1.; Push 2.; Calculate Plus; Push 3.; Calculate Times]) in 
     test (vout = true) "Test failed: result should be [Push 1.; Push 2.; Calculate Plus; Push 3.; Calculate Times]";;
 
+let result = compile expr2_1 in
+  let vout = (result = [Push 1.; Push 2.; Push 3.; Calculate Plus; Calculate Minus]) in 
+    test (vout = true) "Test failed: result should be [Push 1.; Push 2.; Push 3.; Calculate Plus; Calculate Minus]";;
+
+let result = compile expr3_1 in
+  let vout = (result = [Push 1.; Push 2.; Calculate Plus; Push 3.; Push 4.; Push 2.; Calculate Divide; Calculate Minus; Calculate Minus]) in 
+    test (vout = true) "Test failed: result should be [Push 1.; Push 2.; Calculate Plus; Push 3.; Push 4.; Push 2.; Calculate Divide; Calculate Minus; Calculate Minus]";;
+
 let passed = print_string "Test cases for 'compile' passed!";;
 
 (* decompile test cases *)
 let result = decompile expr1_2 in
-  let vout = (result = BinOp (Num 3., Times, BinOp (Num 2., Plus, Num 1.))) in 
-    test (vout = true) "Test failed: result should be BinOp (Num 3., Times, BinOp (Num 2., Plus, Num 1.))";;
+  let vout = (result = BinOp(BinOp(Num 1., Plus, Num 2.), Times, Num 3.)) in 
+    test (vout = true) "Test failed: result should be BinOp(BinOp(Num 1., Plus, Num 2.), Times, Num 3.)";;
+
+let result = decompile expr2_2 in
+  let vout = (result = BinOp(Num 1., Minus, BinOp(Num 2., Plus, Num 3.))) in 
+    test (vout = true) "Test failed: result should be BinOp(Num 1., Minus, BinOp(Num 2., Plus, Num 3.))";;
+
+let result = decompile expr3_2 in
+  let vout = (result = BinOp(BinOp(Num 1., Plus, Num 2.), Minus, BinOp(Num 3., Minus, BinOp(Num 4., Divide, Num 2.)))) in 
+    test (vout = true) "Test failed: result should be BinOp(BinOp(Num 1., Plus, Num 2.), Minus, BinOp(Num 3., Minus, BinOp(Num 4., Divide, Num 2.)))";;
 
 let passed = print_string "Test cases for 'decompile' passed!";;
 
@@ -152,6 +184,5 @@ let result = compileOpt expr2_1 in
 let result = compileOpt expr3_1 in
   let vout = (result = ([Push 3.; Push 4.; Push 2.; Calculate Divide; Calculate Minus; Push 1.; Push 2.; Calculate Plus; Swap; Calculate Minus], 3)) in 
     test (vout = true) "([Push 3.; Push 4.; Push 2.; Calculate Divide; Calculate Minus; Push 1..; Push 2.; Calculate Plus; Swap; Calculate Minus], 3))";;
-
 
 let passed = print_string "Test cases for 'compileOpt' passed!";;
