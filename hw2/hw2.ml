@@ -192,7 +192,7 @@ let rec (dswap : exp list -> exp list) =
     match stack with
       []        -> stack
     | [h]       -> stack
-    | h1::h2::t -> h2::h1::t
+    | h1::h2::t -> stack
 ;;
 
 (* helper function to create the BinOp tuple *)
@@ -246,5 +246,9 @@ let (compileOpt : exp -> (instr list * int)) =
       Num(f)         -> ([Push f], 1)
     | BinOp(l, o, r) -> if height l >= height r 
                         then (compile l@compile r@([op2instr o]), height l)
-                        else (compile r@compile l@[Swap]@([op2instr o]), height r)
+                        else match o with
+                              Plus   -> (compile r@compile l@([op2instr o]), height r)
+                            | Minus  -> (compile r@compile l@[Swap]@([op2instr o]), height r)
+                            | Times  -> (compile r@compile l@([op2instr o]), height r)
+                            | Divide -> (compile r@compile l@[Swap]@([op2instr o]), height r)
 ;;

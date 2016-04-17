@@ -107,10 +107,15 @@ let result = mmult [[1.;2.];[3.;4.]] [[5.;6.];[7.;8.]] in
 let passed = print_string "Test cases for 'mmult' passed!";;
 
 (* evalExp test cases *)
+(* expr1_*: (1 + 2) * 3 *)
 let expr1_1 = BinOp(BinOp(Num 1., Plus, Num 2.), Times, Num 3.);;
 let expr1_2 = [Push 1.; Push 2.; Calculate Plus; Push 3.; Calculate Times];;
+(* expr2_*: 1 - (2 + 3) *)
 let expr2_1 = BinOp(Num 1.0, Minus, BinOp(Num 2.0, Plus, Num 3.0));;
 let expr2_2 = [Push 2.; Push 3.; Calculate Plus; Push 1.; Swap; Calculate Minus];;
+(* expr3_*: (1 + 2) * (3 - (4 / 2)) *)
+let expr3_1 = BinOp(BinOp(Num 1., Plus, Num 2.), Minus, BinOp(Num 3., Minus, BinOp(Num 4., Divide, Num 2.)));;
+let expr3_2 = [Push 3.; Push 4.; Push 2.; Calculate Divide; Calculate Minus; Push 1.; Push 2.; Calculate Plus; Swap; Calculate Minus];;
 
 let result = evalExp expr1_1 in
   let vout = (result = 9.) in 
@@ -143,5 +148,10 @@ let passed = print_string "Test cases for 'decompile' passed!";;
 let result = compileOpt expr2_1 in
   let vout = (result = ([Push 2.; Push 3.; Calculate Plus; Push 1.; Swap; Calculate Minus], 2)) in 
     test (vout = true) "Test failed: result should be ([Push 2.; Push 3.; Calculate Plus; Push 1.; Swap; Calculate Minus], 2))";;
+
+let result = compileOpt expr3_1 in
+  let vout = (result = ([Push 3.; Push 4.; Push 2.; Calculate Divide; Calculate Minus; Push 1.; Push 2.; Calculate Plus; Swap; Calculate Minus], 3)) in 
+    test (vout = true) "([Push 3.; Push 4.; Push 2.; Calculate Divide; Calculate Minus; Push 1..; Push 2.; Calculate Plus; Swap; Calculate Minus], 3))";;
+
 
 let passed = print_string "Test cases for 'compileOpt' passed!";;
