@@ -182,7 +182,7 @@ let result = compileOpt expr2_1 in
     test (vout = true) "Test failed: result should be ([Push 2.; Push 3.; Calculate Plus; Push 1.; Swap; Calculate Minus], 2))";;
 
 let result = compileOpt expr3_1 in
-  let vout = (result = ([Push 3.; Push 4.; Push 2.; Calculate Divide; Calculate Minus; Push 1.; Push 2.; Calculate Plus; Swap; Calculate Minus], 3)) in 
-    test (vout = true) "([Push 3.; Push 4.; Push 2.; Calculate Divide; Calculate Minus; Push 1..; Push 2.; Calculate Plus; Swap; Calculate Minus], 3))";;
+  let vout = (result = ([Push 1.; Push 2.; Calculate Plus; Push 4.; Push 2.; Calculate Divide; Push 3.; Swap; Calculate Minus; Calculate Minus], 3)) in 
+    test (vout = true) "Test failed: result should be ([Push 1.; Push 2.; Calculate Plus; Push 4.; Push 2.; Calculate Divide; Push 3.; Swap; Calculate Minus; Calculate Minus], 3)";;
 
 let passed = print_string "Test cases for 'compileOpt' passed!";;

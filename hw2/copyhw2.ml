@@ -229,6 +229,33 @@ let (decompile : instr list -> exp) =
 
 (*EXTRA CREDIT *) 
 
+(* helper function to tell whether to go left or right *)
+(* let rec (height : exp -> int) =
+  fun e -> match e with
+    Num(f) -> 1
+  | BinOp(l, _, r) ->
+      let hl = height l in
+      let hr = height r in 
+      if hl > hr
+      then 1 + hl
+      else 1 + hr
+;; *)
+
+(* let (compileOpt : exp -> (instr list * int)) =
+  fun e -> 
+    match e with
+      Num(f)         -> ([Push f], 1)
+    | BinOp(l, o, r) -> if height l > height r 
+                        then (compile l@compile r@([op2instr o]), height l)
+                        else if height l < height r
+                          then match o with
+                                Plus   -> (compile r@compile l@([op2instr o]), height r)
+                              | Minus  -> (compile r@compile l@[Swap]@([op2instr o]), height r)
+                              | Times  -> (compile r@compile l@([op2instr o]), height r)
+                              | Divide -> (compile r@compile l@[Swap]@([op2instr o]), height r)
+                        else (compile l@compile r@([op2instr o]), 1 + height l)
+;; *)
+
 let rec (compileOpt : exp -> (instr list * int)) =
   fun e -> 
     match e with
