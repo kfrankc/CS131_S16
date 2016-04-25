@@ -1,5 +1,3 @@
-exception ImplementMe
-
 (*
   Resources Used:
   http://caml.inria.fr/pub/docs/manual-ocaml/libref/Pervasives.html
@@ -34,7 +32,7 @@ let (mplus : matrix -> matrix -> matrix) =
     | (_::_, _::_) -> List.map2 (fun x y -> vplus x y) m1 m2
 ;;
 
-(* helper function that sums up a vector *)
+(* mmult helper function that sums up a vector *)
 let (sumVec : vector -> float) =
   fun v ->
     match v with
@@ -71,7 +69,7 @@ let (vadd : vector -> float) =
     List.fold_left (+.) 0. v
 ;;
 
-(* helper function that does mult *)
+(* helper function that does multiplication *)
 let (hmult : vector -> matrix -> vector) =
   fun v1 m ->
     List.map (fun v2 -> vadd (List.map2 (fun x y -> x *. y) v1 v2)) m
@@ -162,6 +160,7 @@ let (execute : instr list -> float) =
 
 
 (* compile implementation + helper functions *) 
+(* helper function to turn op into instruction *)
 let (op2instr : op -> instr) =
   fun o ->
     match o with
@@ -228,7 +227,13 @@ let (decompile : instr list -> exp) =
 ;;
 
 (*EXTRA CREDIT *) 
-
+(* implementation: recursively go left or right depending on the stack
+ * base case: return 1 for stack size, and Push f, where f is float
+ * add Swap if we do right first instead of left at our current level; Swap
+ * will be added for Minus and Divide ONLY
+ * Lastly, if left and right hand side are the same, we by default do left, AND
+ * we have to add 1 to our stack because we'll have that extra value from the left on our
+ * stack when we are pushing on the right values *)
 let rec (compileOpt : exp -> (instr list * int)) =
   fun e -> 
     match e with
