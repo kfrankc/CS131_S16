@@ -34,7 +34,12 @@ let tests = [
     ("Leaf","Leaf");
     ("Node 1","Node 1");
     ("Node (true, 1, Leaf)","Node (true, 1, Leaf)");
-(*     ("function x -> x", "'a -> 'a = <fun>") *)
+    (* function checks *)
+    ("function x -> x", "<fun>");
+    ("let add2 = function x -> x + 2", "val add2 = <fun>");
+    ("add2 4", "6");
+    ("let add = function (x,y) -> x + y", "val add = <fun>");
+    ("add (1,2)","3")
 		]
 
 (* The Test Harness

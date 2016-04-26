@@ -40,21 +40,13 @@ let rec patMatch (pat:mopat) (value:movalue) : moenv =
                                 let v = IntVal(j) in
                                 Env.add_binding i v env
     | (VarPat(i), BoolVal(j)) -> let env = Env.empty_env() in 
-                                let b = BoolVal(j) in
-                                Env.add_binding i b env
+                                 let b = BoolVal(j) in
+                                 Env.add_binding i b env
     (* | (VarPat(i), FunctionVal(None, p, e, env)) -> Env.empty_env() *)
-    (* | (VarPat(i), FunctionVal(Some s, p, e, env)) when i=s -> let rf = FunctionVal(Some s, p, e, env) in Env.add_binding s rf env *)
-    | (TuplePat(i), TupleVal(j)) -> raise (ImplementMe "got to tuple")
+    | (VarPat(i), FunctionVal(Some s, p, e, env)) when i=s -> let rf = FunctionVal(Some s, p, e, env) in Env.add_binding s rf env
+    | (TuplePat(i), TupleVal(j)) -> let env = Env.empty_env() in List.fold_left2 (fun e x y-> Env.combine_envs e (patMatch x y)) env i j
     | (DataPat(s1, p), DataVal(s2, v)) -> raise (ImplementMe "got to data")
     | _ -> raise (ImplementMe "pattern matching not implemented")
-
-(* let rec listMatch (e1:moexpr) (pl:(mopat * moexpr) list) (env:moenv) : moenv =
-  match pl with
-    [] -> raise MatchFailure 
-  | (pattern, e2)::t -> try
-                          (patMatch pattern (evalExpr e1 env))
-                        with 
-                          MatchFailure -> listMatch e1 t env *)
 
 (* Evaluate an expression in the given environment and return the
    associated value.  Raise a MatchFailure if pattern matching fails.
@@ -88,8 +80,16 @@ let rec evalExpr (e:moexpr) (env:moenv) : movalue =
     | Function(p, e)       -> FunctionVal(None, p, e, env)
     | FunctionCall(e1, e2) -> (match (evalExpr e1 env) with
                                 FunctionVal(None, p, e, env) -> evalExpr e (patMatch p (evalExpr e2 env))
+                                | FunctionVal(Some s, p, e, env) -> evalExpr e (patMatch p (evalExpr e2 env))
                                 | _                          -> raise (DynamicTypeError "undeclared function variable"))
-    (* | Match(e, pl)         -> listMatch e pl env *)
+    | Match(e, pl)         -> let rec listMatch (e:moexpr) (pl:(mopat * moexpr) list) (env:moenv) : movalue =
+                                match pl with
+                                  [] -> raise MatchFailure 
+                                | (pattern, e2)::t -> try
+                                                        evalExpr e2 (patMatch pattern (evalExpr e env))
+                                                      with 
+                                                        MatchFailure -> listMatch e t env 
+                              in listMatch e pl env
     | Tuple(el)            -> TupleVal(List.map(fun e -> evalExpr e env) el)
     | Data(s, e)           -> (match e with
                                 None -> DataVal(s, None)
@@ -110,6 +110,7 @@ let rec evalDecl (d:modecl) (env:moenv) : moresult =
       (* a top-level expression has no name and is evaluated to a value *)
       Expr(e) -> (None, evalExpr e env)
     | Let(s, e) -> (Some s, evalExpr e env)
+    | LetRec(s, e) -> (Some s, evalExpr e env)
     | _ -> raise (ImplementMe "let and let rec not implemented")
 
 

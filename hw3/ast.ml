@@ -53,7 +53,7 @@ Note that for a "let rec" MOCaml uses only the syntax shown above,
 which ensures that a function is declared.  In particular, in (M)OCaml
 the syntax "let rec f p = e" is shorthand for
 "let rec f = function p -> e".
-   
+
 *)
 type modecl =
   | Expr of moexpr
