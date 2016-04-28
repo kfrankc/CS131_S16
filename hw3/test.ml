@@ -39,7 +39,12 @@ let tests = [
     ("let add2 = function x -> x + 2", "val add2 = <fun>");
     ("add2 4", "6");
     ("let add = function (x,y) -> x + y", "val add = <fun>");
-    ("add (1,2)","3")
+    ("add (1,2)","3");
+    (* more function checks *)
+    ("(function x -> (function y -> x*y) x) 5","25");
+    ("let y = 100","val y = 100");
+    ("let f = function x -> x + y","val f = <fun>");
+    ("f 10","110")
 		]
 
 (* The Test Harness

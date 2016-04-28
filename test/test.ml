@@ -1,13 +1,15 @@
-(* let joindicts l1 l2 =
-	List.fold_right (fun x acc -> match x with
-								  (k,v) -> (let w = get1 v l2 in
-										match w with
-											None -> []
-										  | Some val -> acc @ [(k, val)])) l1 []
- *)
+(* Practice Midterm Given in Class *)
 
-type tree = Leaf | Node of int * tree list
- let rec incTree n t =
-         match t with
-           Leaf -> Leaf
-         | Node(d,children) -> Node(d+n, List.map (fun x -> incTree n x) children)
+type lazylist = Nil | Cons of int * (unit -> lazylist)
+
+let head (Cons (x,f)) = x
+
+let tail (Cons (x,f)) = f()
+
+let rec intsFrom (n:int) : lazylist = 
+	Cons(n, function() -> intsFrom (n+1))
+
+let rec lazymap (func:int -> int) (l:lazylist) : lazylist =
+	match l with
+		Nil -> Nil
+	  | Cons(x,f) -> Cons((func x), function() -> lazymap func (f()))

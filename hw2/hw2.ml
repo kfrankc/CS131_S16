@@ -86,7 +86,7 @@ let (mmult : matrix -> matrix -> matrix) =
 ;;
 
 (* Problem 2: Calculators *)           
-           
+
 (* a type for arithmetic expressions *)
 type op = Plus | Minus | Times | Divide
 type exp = Num of float | BinOp of exp * op * exp
@@ -235,7 +235,7 @@ let (decompile : instr list -> exp) =
  * we have to add 1 to our stack because we'll have that extra value from the left on our
  * stack when we are pushing on the right values *)
 let rec (compileOpt : exp -> (instr list * int)) =
-  fun e -> 
+  fun e ->  
     match e with
       Num(f)         -> ([Push f], 1)
     | BinOp(l, o, r) -> let (lhs, ls) = compileOpt l in
