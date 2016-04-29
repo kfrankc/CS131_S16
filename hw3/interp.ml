@@ -7,6 +7,7 @@
    Other Resources I Consulted:
    Professor Millstein Week 3 Monday, Wednesday, Week 4 Monday, Wednesday notes
    TA Saswat's github notes: https://github.com/SaswatPadhi/S16_TA_CS131
+   http://caml.inria.fr/pub/docs/manual-ocaml/libref/List.html
    
 *)
 
@@ -37,19 +38,18 @@ let rec patMatch (pat:mopat) (value:movalue) : moenv =
 	 no variables are declared in the pattern so the returned environment is empty *)
       (IntPat(i), IntVal(j)) when i=j -> Env.empty_env()
     | (BoolPat(i), BoolVal(j)) when i=j -> Env.empty_env()
-    | (WildcardPat, _) -> Env.empty_env() (* TODO: check this *)
-    | (VarPat(i), IntVal(j)) -> let env = Env.empty_env() in 
-                                let v = IntVal(j) in
-                                Env.add_binding i v env
-    | (VarPat(i), BoolVal(j)) -> let env = Env.empty_env() in 
-                                 let b = BoolVal(j) in
-                                 Env.add_binding i b env
-    | (VarPat(i), FunctionVal(None, p, e, env)) -> Env.empty_env()
-    | (VarPat(i), FunctionVal(Some s, p, e, env)) when i=s -> let rf = FunctionVal(Some s, p, e, env) in Env.add_binding s rf env
-    | (TuplePat(i), TupleVal(j)) -> let env = Env.empty_env() in List.fold_left2 (fun e x y-> Env.combine_envs e (patMatch x y)) env i j
+    | (WildcardPat, _) -> Env.empty_env()
+    | (VarPat(i), mv)  -> let env = Env.empty_env() in 
+                                 Env.add_binding i mv env
+    | (TuplePat(i), TupleVal(j)) -> let env = Env.empty_env() in
+                                    let pat_len = List.length i in 
+                                    let val_len = List.length j in
+                                    if pat_len=val_len then
+                                      List.fold_left2 (fun e x y-> Env.combine_envs e (patMatch x y)) env i j
+                                    else raise MatchFailure
     | (DataPat(s1, None), DataVal(s2, _)) | (DataPat(s1, _), DataVal(s2, None)) when s1=s2 -> Env.empty_env()
     | (DataPat(s1, Some p), DataVal(s2, Some v)) when s1=s2 -> (patMatch p v)
-    | _ -> raise MatchFailure
+    | (_,_) | _ -> raise MatchFailure
 
 (* Evaluate an expression in the given environment and return the
    associated value.  Raise a MatchFailure if pattern matching fails.
@@ -91,7 +91,7 @@ let rec evalExpr (e:moexpr) (env:moenv) : movalue =
                                 (match pl with
                                   [] -> raise MatchFailure
                                 | (pattern, e2)::t -> try
-                                                        evalExpr e2 (patMatch pattern (evalExpr e env))
+                                                        evalExpr e2 (Env.combine_envs env (patMatch pattern (evalExpr e env)))
                                                       with 
                                                         MatchFailure -> listMatch e t env)
                               in listMatch e pl env
@@ -105,8 +105,8 @@ let rec evalExpr (e:moexpr) (env:moenv) : movalue =
                                 print_newline();
                                 Env.lookup s env
                               with
-                                Not_found -> raise (DynamicTypeError "TEST3 undeclared variable")
-                              | _ -> raise (DynamicTypeError "TEST2 undeclared variable"))
+                                _ -> raise (DynamicTypeError "TEST3 undeclared variable"))
+                              (* | _ -> raise (DynamicTypeError "TEST2 undeclared variable?")) *)
     | _                    -> raise (DynamicTypeError "TEST1 undeclared variable")
 
 (* Evaluate a declaration in the given environment.  Evaluation
