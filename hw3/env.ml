@@ -31,6 +31,8 @@ module type ENV = sig
     (* Lookup a name in the environment, throwing NotBound if the name is not
        bound in the environment. *)
   val lookup: string -> 'a env -> 'a
+
+  val print_env: 'a env -> unit list
 end;;
 
 (* The environment module implementation. *)
@@ -52,6 +54,9 @@ module Env : ENV = struct
   (* Combine two environments, with bindings from the second one shadowing
      bindings from the first one. *)
   let combine_envs (e1:'a env) (e2: 'a env):'a env = e2@e1 
+
+  let print_env (e: 'a env) = 
+    List.map (fun (x, _) -> print_string (x ^ " ")) e
 
   (* Lookup a name in the environment, throwing NotBound if the name is not
      bound in the environment. *)

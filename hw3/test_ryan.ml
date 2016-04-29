@@ -15,38 +15,6 @@
 *)
 let tests = [
     (* YOU NEED TO ADD A LOT MORE TESTS! *)
-		("3", "3"); 
-		("false", "false");
-		("let x = 34", "val x = 34");
-		("y", "dynamic type error");
-		("x + 4", "38");
-    ("let y = 6", "val y = 6");
-    ("x + y", "40");
-    (* if statement checks *)
-    ("if 1=1 then 2 else 3","2");
-    ("if 1=2 then 2 else 3","3");
-    ("if 1+2 then 2 else 3","dynamic type error");
-    (* tuple checks *)
-    ("(1+1, 2+2)","(2, 4)");
-    ("(1,2)","(1, 2)");
-    ("(1=1, 2+2)","(true, 4)");
-    (* data checks *)
-    ("Leaf","Leaf");
-    ("Node 1","Node 1");
-    ("Node (true, 1, Leaf)","Node (true, 1, Leaf)");
-    (* function checks *)
-    ("function x -> x", "<fun>");
-    ("let add2 = function x -> x + 2", "val add2 = <fun>");
-    ("add2 4", "6");
-    ("let add = function (x,y) -> x + y", "val add = <fun>");
-    ("add (1,2)","3");
-    (* more function checks *)
-    ("(function x -> (function y -> x*y) x) 5","25");
-    ("let y = 100","val y = 100");
-    ("let f = function x -> x + y","val f = <fun>");
-    ("f 10","110");
-
-    (* ryan's test case *)
     ("3", "3");
     ("false", "false");
     ("let x = 34", "val x = 34");
@@ -69,6 +37,7 @@ let tests = [
     ("inc 4", "5"); 
 
     (* Alex's *)
+    ("y", "dynamic type error");
     ("let y = 7", "val y = 7");
     ("y", "7");
     ("x + 4", "38");
@@ -133,8 +102,8 @@ let tests = [
     ("true=true", "dynamic type error");
     ("let f = function (x,y) -> x + y", "val f = <fun>");
     ("f (1,1)", "2");
-    ("f (true,1)", "dynamic type error")
-		]
+    ("f (true,1)", "dynamic type error");
+    ]
 
 (* The Test Harness
    You don't need to understand the code below.
