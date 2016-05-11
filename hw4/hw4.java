@@ -196,13 +196,16 @@ class ListStringSet implements StringSet {
     // add s to linkedlist
     public void add(String s) {
         // if s is already in the linkedlist, do nothing
-        if (contains(s))
-            return;
+        // if (contains(s))
+        //     return;
         SNode tmp1 = head;
         SNode tmp2 = head.getNext();
         SNode node = new SElement(s);
         System.out.println(node.getData());
         while(true) {
+            if (head.getData() != null && tmp1.getData() != null && tmp2.getData() != null && (s.compareTo(tmp1.getData()) == 0 || s.compareTo(tmp2.getData()) == 0)){
+                return;
+            }
             if (head.getData() == null) {
                 // list is empty
                 head = new SElement(s);
