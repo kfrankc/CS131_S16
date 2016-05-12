@@ -168,93 +168,23 @@ interface StringSet {
 // an implementation of StringSet using a linked list
 class ListStringSet implements StringSet {
     protected SNode head;
-    public ListStringSet() {
-        head = new SEmpty();
-    }
+    public ListStringSet() {head = new SEmpty();}
     // return size of LinkedList
-    public int size() {
-        int s = 0;
-        SNode tmp = head;
-        while(tmp.getData() != null) {
-            s = s + 1;
-            tmp = tmp.getNext();
-        }
-        return s;
-    }
+    public int size() {return head.calcSize(head);}
     // contains function that checks if s is in LinkedList
-    public boolean contains(String s) {
-        SNode tmp = head;
-        while (tmp.getData() != null) {
-            if (s.compareTo(tmp.getData())==0)
-                return true;
-            else {
-                tmp = tmp.getNext();
-            }
-        }
-        return false;
-    }
+    public boolean contains(String s) {return head.checkContains(s, head);}
     // add s to linkedlist
     public void add(String s) {
-        // if s is already in the linkedlist, do nothing
-        // if (contains(s))
-        //     return;
-        SNode tmp1 = head;
-        SNode tmp2 = head.getNext();
-        SNode node = new SElement(s);
-        System.out.println(node.getData());
-        while(true) {
-            if (head.getData() != null && tmp1.getData() != null && tmp2.getData() != null && (s.compareTo(tmp1.getData()) == 0 || s.compareTo(tmp2.getData()) == 0)){
-                return;
-            }
-            if (head.getData() == null) {
-                // list is empty
-                head = new SElement(s);
-                head.setNext(new SEmpty());
-                System.out.println("head: " + head.getData());
-                return;
-            }
-            else if (s.compareTo(head.getData()) < 0) {
-                // insert s before head
-                SNode tmp = head;
-                head = new SElement(s);
-                head.setNext(tmp);
-                System.out.println("added node in the beginning.");
-                return;
-            }
-            else if (s.compareTo(tmp1.getData()) > 0 && s.compareTo(tmp2.getData()) < 0) {
-                // insert s in between tmp1 and tmp2
-                node.setNext(tmp2);
-                tmp1.setNext(node);
-                System.out.println("insertion in between tmp1 and tmp2");
-                return;
-            }
-            else if ((tmp1.getNext()).getData() == null) {
-                // reach end of list, add s as last node
-                node.setNext(new SEmpty());
-                tmp1.setNext(node);
-                System.out.println("add to end of list due to tmp1");
-                return;
-            }
-            else if ((tmp2.getNext()).getData() == null) {
-                // reach end of list, add s as last node
-                node.setNext(new SEmpty());
-                tmp2.setNext(node);
-                System.out.println("add to end of list due to tmp2");
-                return;
-            }
-            else if (s.compareTo(tmp1.getData()) > 0 && s.compareTo(tmp2.getData()) > 0) {
-                // increment tmp1 and tmp2
-                tmp1 = tmp2;
-                tmp2 = tmp2.getNext();
-                System.out.println("incremented tmp1 and tmp2.");
-            }
-        }
+        if (head.isEmpty() == true || s.compareTo(head.getData()) < 0)
+            head = head.addString(s, head);
+        else 
+            head.addString(s, head);
     }
     public void print() { 
+        System.out.println("==== Print ListStringSet ====");
         SNode tmp = head;
-        System.out.println("========= Print LinkedList ========");
-        while(tmp.getData() != null) {
-            System.out.println(tmp.getData() + ", ");
+        while (tmp.isEmpty() == false){
+            System.out.println(tmp.getData());
             tmp = tmp.getNext();
         }
     }
@@ -262,24 +192,29 @@ class ListStringSet implements StringSet {
 
 // a type for the nodes of the linked list
 interface SNode {
-    String getData();
+    Boolean isEmpty();
+    int calcSize(SNode node);
+    Boolean checkContains(String s, SNode node);
+    SNode addString(String s, SNode node);
     SNode getNext();
-    void setNext(SNode n);
+    void setNext(SNode node);
+    String getData();
 }
 
 // represents an empty node (which ends a linked list)
 class SEmpty implements SNode {
-    public SEmpty() {
+    public SEmpty() {}
+    public Boolean isEmpty() {return true;}
+    public int calcSize(SNode node) {return 0;}
+    public Boolean checkContains(String s, SNode node) {return false;}
+    public SNode addString(String s, SNode node) {
+        SNode tmp = new SElement(s);
+        tmp.setNext(new SEmpty());
+        return tmp;
     }
-    public String getData() {
-        return null;
-    }
-    public SNode getNext() {
-        return null;
-    }
-    public void setNext(SNode n) {
-        return;
-    }
+    public SNode getNext() {return new SEmpty();}
+    public void setNext(SNode node) {return;}
+    public String getData() {return "";}
 }
 
 // represents a non-empty node
@@ -290,19 +225,142 @@ class SElement implements SNode {
         elem = s;
         next = new SEmpty();
     }
-    // get Node's string
-    public String getData() {
-        return elem;
+    public Boolean isEmpty() {return false;}
+    public int calcSize(SNode node) {
+        if (node.isEmpty() == true)
+            return 0;
+        else
+            return 1 + next.calcSize(next);
     }
-    // get next node
-    public SNode getNext() {
-        return next;
+    public Boolean checkContains(String s, SNode node) {
+        if (node.isEmpty() == true)
+            return false;
+        if (s.compareTo(node.getData()) == 0)
+            return true;
+        else
+            return checkContains(s, node.getNext());
     }
-    // set current node's string to next node's string
-    public void setNext(SNode n) {
-        next = n;
-        return;
+    public SNode addString(String s, SNode node) {
+        // check duplicates
+        if (s.compareTo(node.getData()) == 0)
+            return node;
+        if (s.compareTo(node.getData()) < 0) { // s goes in front
+            SNode tmp = new SElement(s);
+            tmp.setNext(node);
+            return tmp;
+        } else {
+            node.setNext((node.getNext()).addString(s, node.getNext()));
+            return node;
+        }
     }
+    public SNode getNext() {return next;}
+    public void setNext(SNode node) {next = node;}
+    public String getData() {return elem;}
+}
+
+// Part 2b
+// the type for a set
+interface Set<T> {
+    int size();
+    boolean contains(T t);
+    void add(T t);
+    void print();
+}
+// class ListSet
+class ListSet<T> implements Set<T> {
+    protected Node<T> head;
+    protected Comparator<T> cmp;
+    public ListSet(Comparator<T> c) {
+        head = new Empty<T>();
+        cmp = c;
+    }
+    public int size() {return head.calcSize(head);}
+    public boolean contains(T t) {return head.checkContains(t, head);}
+    public void add(T t) {
+        if (head.isEmpty() == true || cmp.compare(t, head.getData()) < 0)
+            head = head.addT(t, head, cmp);
+        else
+            head.addT(t, head, cmp);
+    }
+    public void print() {
+        System.out.println("==== Print ListSet ====");
+        Node<T> tmp = head;
+        while (tmp.isEmpty() == false){
+            System.out.println(tmp.getData());
+            tmp = tmp.getNext();
+        }
+    }
+}
+// interface Node
+interface Node<T> {
+    boolean isEmpty();
+    int calcSize(Node<T> node);
+    boolean checkContains(T t, Node<T> node);
+    Node<T> addT(T t, Node<T> node, Comparator<T> cmp);
+    Node<T> getNext();
+    void setNext(Node<T> node);
+    T getData();
+}
+// class Empty Node
+class Empty<T> implements Node<T> {
+    public Empty() {}
+    public boolean isEmpty() {return true;}
+    public int calcSize(Node<T> node) {return 0;}
+    public boolean checkContains(T t, Node<T> node) {return false;}
+    public Node<T> addT(T t, Node<T> node, Comparator<T> cmp) {
+        Node<T> tmp = new Element<T>(t, cmp);
+        tmp.setNext(new Empty<T>());
+        return tmp;
+    }
+    public Node<T> getNext() {return new Empty<T>();}
+    public void setNext(Node<T> node) {return;}
+    public T getData() {
+        T tmp;
+        return null; //TODO: shouldn't be null
+    }
+
+}
+// class Element Node
+class Element<T> implements Node<T> {
+    protected T elem;
+    protected Node<T> next;
+    protected Comparator<T> cmp;
+    public Element(T t, Comparator<T> c) {
+        elem = t;
+        cmp = c;
+        next = new Empty<T>();
+    }
+    public boolean isEmpty() {return false;}
+    public int calcSize(Node<T> node) {
+        if (node.isEmpty() == true)
+            return 0;
+        else
+            return 1 + next.calcSize(next);
+    }
+    public boolean checkContains(T t, Node<T> node) {
+        if (node.isEmpty() == true)
+            return false;
+        if (cmp.compare(t, node.getData()) == 0)
+            return true;
+        else
+            return checkContains(t, node.getNext());
+    }
+    public Node<T> addT(T t, Node<T> node, Comparator<T> cmp) {
+        // check duplicates
+        if (cmp.compare(t, node.getData()) == 0)
+            return node;
+        if (cmp.compare(t, node.getData()) < 0) { // s goes in front
+            Node<T> tmp = new Element<T>(t, cmp);
+            tmp.setNext(node);
+            return tmp;
+        } else {
+            node.setNext((node.getNext()).addT(t, node.getNext(), cmp));
+            return node;
+        }
+    }
+    public Node<T> getNext() {return next;}
+    public void setNext(Node<T> node) {next = node;}
+    public T getData() {return elem;}
 }
 
 class CalcTest {
@@ -368,16 +426,44 @@ class CalcTest {
 
         // a test for Problem 2a
         StringSet s1 = new ListStringSet();
-        s1.add("hi");
-        s1.add("hi");
-        s1.add("frank");
-        s1.add("zebra");
-        s1.add("monkey");
-        s1.add("bear");
-        s1.add("fox");
-        s1.add("frank");
+        assert(s1.size() == 0);
+        assert(s1.contains("a") == false);
+        s1.add("ant");
+        s1.add("b");
+        s1.add("d");
+        assert(s1.size() == 3);
+        s1.add("e");
+        s1.add("f");
+        s1.add("c");
+        s1.add("a");
+        assert(s1.contains("e") == true);
+        assert(s1.size() == 7);
+        s1.add("cat");
+        s1.add("z");
         s1.print();
-        // a test for Problem 2b
-
+        // tests for Problem 2b
+        ListSet<Integer> sList = new ListSet<Integer>((Integer i1, Integer i2) -> i2 - i1);
+        sList.add(1);
+        sList.add(3);
+        sList.add(-6);
+        assert(sList.contains(100) == false);
+        sList.add(100);
+        sList.add(1);
+        sList.add(100);
+        assert(sList.contains(1) == true);
+        assert(sList.size() == 4);
+        sList.print();
+        ListSet<String> sList2 = new ListSet<String>((String i1, String i2) -> i2.length() - i1.length());
+        sList2.add("Frank");
+        sList2.add("Dog");
+        sList2.add("Yo");
+        assert(sList2.contains("Frank") == true);
+        sList2.add("Francisco");
+        sList2.add("Bank");
+        sList2.add("O");
+        assert(sList2.contains("o") == true);
+        assert(sList2.size() == 6);
+        sList2.print();
+        System.out.println("Passed all tests!");
     }
 }
