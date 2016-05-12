@@ -175,87 +175,70 @@ class ListStringSet implements StringSet {
     public boolean contains(String s) {return head.checkContains(s, head);}
     // add s to linkedlist
     public void add(String s) {
-        if (head.isEmpty() == true || s.compareTo(head.getData()) < 0)
-            head = head.addString(s, head);
-        else 
-            head.addString(s, head);
+        head = head.addString(s, head);
     }
-    public void print() { 
+    public void print() {
         System.out.println("==== Print ListStringSet ====");
-        SNode tmp = head;
-        while (tmp.isEmpty() == false){
-            System.out.println(tmp.getData());
-            tmp = tmp.getNext();
-        }
+        head.print(head);
     }
 }
 
 // a type for the nodes of the linked list
 interface SNode {
-    Boolean isEmpty();
     int calcSize(SNode node);
     Boolean checkContains(String s, SNode node);
     SNode addString(String s, SNode node);
-    SNode getNext();
-    void setNext(SNode node);
-    String getData();
+    void print(SNode node);
 }
 
 // represents an empty node (which ends a linked list)
 class SEmpty implements SNode {
     public SEmpty() {}
-    public Boolean isEmpty() {return true;}
     public int calcSize(SNode node) {return 0;}
     public Boolean checkContains(String s, SNode node) {return false;}
     public SNode addString(String s, SNode node) {
-        SNode tmp = new SElement(s);
-        tmp.setNext(new SEmpty());
+        SNode next = new SEmpty();
+        SNode tmp = new SElement(s, next);
         return tmp;
     }
-    public SNode getNext() {return new SEmpty();}
-    public void setNext(SNode node) {return;}
-    public String getData() {return "";}
+    public void print(SNode node) {return;}
 }
 
 // represents a non-empty node
 class SElement implements SNode {
     protected String elem;
     protected SNode next;
-    public SElement(String s) {
+    public SElement(String s, SNode node) {
         elem = s;
-        next = new SEmpty();
+        next = node;
     }
-    public Boolean isEmpty() {return false;}
     public int calcSize(SNode node) {
-        if (node.isEmpty() == true)
-            return 0;
-        else
-            return 1 + next.calcSize(next);
+        return 1 + next.calcSize(next);
     }
     public Boolean checkContains(String s, SNode node) {
-        if (node.isEmpty() == true)
-            return false;
-        if (s.compareTo(node.getData()) == 0)
+        if (s.compareTo(elem) == 0)
             return true;
         else
-            return checkContains(s, node.getNext());
+            return next.checkContains(s, next);
     }
     public SNode addString(String s, SNode node) {
         // check duplicates
-        if (s.compareTo(node.getData()) == 0)
+        if (s.compareTo(elem) == 0)
             return node;
-        if (s.compareTo(node.getData()) < 0) { // s goes in front
-            SNode tmp = new SElement(s);
-            tmp.setNext(node);
+        if (s.compareTo(elem) < 0) { // s goes in front
+            SNode tmp = new SElement(s, node);
             return tmp;
         } else {
-            node.setNext((node.getNext()).addString(s, node.getNext()));
+            next = next.addString(s, next);
             return node;
+            // node.setNext((node.getNext()).addString(s, node.getNext()));
+            // return node;
         }
     }
-    public SNode getNext() {return next;}
-    public void setNext(SNode node) {next = node;}
-    public String getData() {return elem;}
+    public void print(SNode node) {
+        System.out.println(elem);
+        next.print(next);
+    }
 }
 
 // Part 2b
@@ -277,90 +260,66 @@ class ListSet<T> implements Set<T> {
     public int size() {return head.calcSize(head);}
     public boolean contains(T t) {return head.checkContains(t, head);}
     public void add(T t) {
-        if (head.isEmpty() == true || cmp.compare(t, head.getData()) < 0)
-            head = head.addT(t, head, cmp);
-        else
-            head.addT(t, head, cmp);
+        head = head.addT(t, head, cmp);
     }
     public void print() {
         System.out.println("==== Print ListSet ====");
-        Node<T> tmp = head;
-        while (tmp.isEmpty() == false){
-            System.out.println(tmp.getData());
-            tmp = tmp.getNext();
-        }
+        head.print(head);
     }
 }
 // interface Node
 interface Node<T> {
-    boolean isEmpty();
     int calcSize(Node<T> node);
-    boolean checkContains(T t, Node<T> node);
+    Boolean checkContains(T t, Node<T> node);
     Node<T> addT(T t, Node<T> node, Comparator<T> cmp);
-    Node<T> getNext();
-    void setNext(Node<T> node);
-    T getData();
+    void print(Node<T> node);
 }
 // class Empty Node
 class Empty<T> implements Node<T> {
-    public Empty() {}
-    public boolean isEmpty() {return true;}
     public int calcSize(Node<T> node) {return 0;}
-    public boolean checkContains(T t, Node<T> node) {return false;}
+    public Boolean checkContains(T t, Node<T> node) {return false;}
     public Node<T> addT(T t, Node<T> node, Comparator<T> cmp) {
-        Node<T> tmp = new Element<T>(t, cmp);
-        tmp.setNext(new Empty<T>());
+        Node<T> next = new Empty<T>();
+        Node<T> tmp = new Element<T>(t, next, cmp);
         return tmp;
     }
-    public Node<T> getNext() {return new Empty<T>();}
-    public void setNext(Node<T> node) {return;}
-    public T getData() {
-        T tmp;
-        return null; //TODO: shouldn't be null
-    }
-
+    public void print(Node<T> node) {return;}
 }
 // class Element Node
 class Element<T> implements Node<T> {
     protected T elem;
     protected Node<T> next;
     protected Comparator<T> cmp;
-    public Element(T t, Comparator<T> c) {
+    public Element(T t, Node<T> node, Comparator<T> c) {
         elem = t;
         cmp = c;
-        next = new Empty<T>();
+        next = node;
     }
-    public boolean isEmpty() {return false;}
     public int calcSize(Node<T> node) {
-        if (node.isEmpty() == true)
-            return 0;
-        else
-            return 1 + next.calcSize(next);
+        return 1 + next.calcSize(next);
     }
-    public boolean checkContains(T t, Node<T> node) {
-        if (node.isEmpty() == true)
-            return false;
-        if (cmp.compare(t, node.getData()) == 0)
+    public Boolean checkContains(T t, Node<T> node) {
+        if (cmp.compare(t, elem) == 0)
             return true;
         else
-            return checkContains(t, node.getNext());
+            return next.checkContains(t, next);
     }
     public Node<T> addT(T t, Node<T> node, Comparator<T> cmp) {
         // check duplicates
-        if (cmp.compare(t, node.getData()) == 0)
+        if (cmp.compare(t, elem) == 0)
             return node;
-        if (cmp.compare(t, node.getData()) < 0) { // s goes in front
-            Node<T> tmp = new Element<T>(t, cmp);
-            tmp.setNext(node);
+        if (cmp.compare(t, elem) < 0) { // s goes in front
+            Node<T> tmp = new Element<T>(t, node, cmp);
             return tmp;
         } else {
-            node.setNext((node.getNext()).addT(t, node.getNext(), cmp));
+            next = next.addT(t, next, cmp);
             return node;
         }
     }
-    public Node<T> getNext() {return next;}
-    public void setNext(Node<T> node) {next = node;}
-    public T getData() {return elem;}
+    public void print(Node<T> node) {
+        System.out.println(elem);
+        next.print(next);
+    }
 }
 
 class CalcTest {
@@ -431,17 +390,18 @@ class CalcTest {
         s1.add("ant");
         s1.add("b");
         s1.add("d");
-        assert(s1.size() == 3);
+        s1.add("y");
+        assert(s1.size() == 4);
         s1.add("e");
         s1.add("f");
         s1.add("c");
         s1.add("a");
         assert(s1.contains("e") == true);
-        assert(s1.size() == 7);
+        assert(s1.size() == 8);
         s1.add("cat");
         s1.add("z");
         s1.print();
-        // tests for Problem 2b
+        // // tests for Problem 2b
         ListSet<Integer> sList = new ListSet<Integer>((Integer i1, Integer i2) -> i2 - i1);
         sList.add(1);
         sList.add(3);
