@@ -14,7 +14,6 @@
 
 // import lists and other data structures from the Java standard library
 import java.util.*;
-
 // PROBLEM 1
 
 // a type for arithmetic expressions
@@ -133,7 +132,9 @@ class Calculate implements Instr {
     }
 
     public void runInstr(Stack<Double> stack) {
-        stack.push(op.calculate(stack.pop(), stack.pop()));
+        double exp1 = stack.pop();
+        double exp2 = stack.pop();
+        stack.push(op.calculate(exp2, exp1));
     }
 
     public boolean equals(Object o) { return (o instanceof Calculate) && 
@@ -366,7 +367,7 @@ class CalcTest {
         is3.add(new Push(3.0));
         is3.add(new Calculate(Op.TIMES));
         Instrs instrs3 = new Instrs(is3);
-        assert(instrs3.execute() == 3.0); // TODO: SHOULD BE -3
+        assert(instrs3.execute() == -3.0);
 
         List<Instr> is4 = new LinkedList<Instr>();
         is4.add(new Push(1.0));
@@ -378,7 +379,7 @@ class CalcTest {
         is5.add(new Push(2.0));
         is5.add(new Calculate(Op.DIVIDE));
         Instrs instrs5 = new Instrs(is5);
-        assert(instrs5.execute() == 2.0);
+        assert(instrs5.execute() == 0.5);
 
         // a test for Problem 1c
         assert(exp.compile().equals(is));
@@ -444,7 +445,7 @@ class CalcTest {
         assert(sList3.contains("e") == true);
         assert(sList3.size() == 8);
         sList3.add("cat");
-        sList3.add("z");
+        sList3.add("zebra");
         sList3.print();
         System.out.println("Passed all tests!");
     }
