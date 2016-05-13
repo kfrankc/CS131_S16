@@ -5,6 +5,10 @@
    Others With Whom I Discussed Things:
 
    Other Resources I Consulted:
+   http://www.tutorialspoint.com/java/java_string_compareto.htm
+   https://docs.oracle.com/javase/7/docs/api/java/util/Comparator.html
+   http://stackoverflow.com/questions/10179449/what-is-parametric-polymorphism-in-java-with-example
+   Professor Millstein Lecture Notes Week 6 Wednesday, Week 7 Monday, & Week 7 Wednesday
    
 */
 
