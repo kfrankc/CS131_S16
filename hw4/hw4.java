@@ -424,6 +424,24 @@ class CalcTest {
         assert(sList2.contains("o") == true);
         assert(sList2.size() == 6);
         sList2.print();
+        ListSet<String> sList3 = new ListSet<String>((String i1, String i2) -> i1.compareTo(i2));
+        assert(sList3.size() == 0);
+        assert(sList3.contains("a") == false);
+        sList3.add("ant");
+        sList3.add("b");
+        sList3.add("d");
+        sList3.add("y");
+        assert(sList3.size() == 4);
+        sList3.add("e");
+        sList3.add("f");
+        sList3.add("c");
+        sList3.add("a");
+        sList3.add("a");
+        assert(sList3.contains("e") == true);
+        assert(sList3.size() == 8);
+        sList3.add("cat");
+        sList3.add("z");
+        sList3.print();
         System.out.println("Passed all tests!");
     }
 }
