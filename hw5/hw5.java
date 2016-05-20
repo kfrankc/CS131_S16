@@ -104,6 +104,7 @@ class PPMImage {
 		os.close();
     }
 
+    // helper function to perform swap on two RGB objects
     public void swap(RGB p1, RGB p2) {
 		RGB tmp = new RGB(0, 0, 0);
 		tmp.R = p1.R;
@@ -180,7 +181,7 @@ class PPMImage {
 		private int width, height;
 
 		// constants are final - assigned once
-		private final int SEQUENTIAL_CUTOFF = 800;
+		// private final int SEQUENTIAL_CUTOFF = 800;
 
 		public MirrorTask(RGB[] p, int low, int high, int width, int height) {
 			this.px = p;
@@ -191,18 +192,16 @@ class PPMImage {
 		}
 
 		public RGB[] compute() {
-			if (high - low > SEQUENTIAL_CUTOFF) {
-				int mid = (height / 2) * width;
+			if (height != 1) {
+				// int mid = (height / 2) * width;
+				int mid = low + width;
 				MirrorTask left = 
-					new MirrorTask(px, low, mid, width, height/2);
+					new MirrorTask(px, low, mid, width, 1);
 				MirrorTask right = 
-					new MirrorTask(px, mid, high, width, height/2);
+					new MirrorTask(px, mid, high, width, height-1);
 				left.fork(); // fork them both
-				// RGB[] l2 = right.compute(); // join is synchronization
-				// RGB[] l1 = left.join();
-				right.fork();
+				RGB[] l2 = right.compute(); // join is synchronization
 				RGB[] l1 = left.join();
-				RGB[] l2 = right.join();
 				RGB[] comb = 
 					Stream.concat(Arrays.stream(l1), Arrays.stream(l2))
 						.toArray(RGB[]::new);
@@ -264,10 +263,96 @@ class PPMImage {
     	return new PPMImage(wt, ht, mt, px);
     }
 
+ //    class GaussianTask extends RecursiveTask <RGB[]> {
+	// 	private RGB[] px;
+	// 	private int low, high;
+	// 	private int width, height;
+	// 	private double[][] gfilter;
+
+	// 	// constants are final - assigned once
+	// 	// private final int SEQUENTIAL_CUTOFF = 800;
+
+	// 	public GaussianTask(RGB[] p, int low, int high, int width, int height, double[][] gfilter) {
+	// 		this.px = p;
+	// 		this.low = low;
+	// 		this.high = high;
+	// 		this.width = width;
+	// 		this.height = height;
+	// 		this.gfilter = gfilter;
+	// 	}
+
+	// 	public RGB[] compute() {
+	// 		if (height != 1) {
+	// 			// int mid = (height / 2) * width;
+	// 			int mid = low + width;
+	// 			MirrorTask left = 
+	// 				new GaussianTask(px, low, mid, width, 1);
+	// 			MirrorTask right = 
+	// 				new GaussianTask(px, mid, high, width, height-1);
+	// 			left.fork(); // fork them both
+	// 			RGB[] l2 = right.compute(); // join is synchronization
+	// 			RGB[] l1 = left.join();
+	// 			RGB[] comb = 
+	// 				Stream.concat(Arrays.stream(l1), Arrays.stream(l2))
+	// 					.toArray(RGB[]::new);
+ //                return comb;
+	// 		} else {
+	// 			RGB[] row = Arrays.copyOfRange(px, low, high);
+	// 			// for (int i = low; i < high; i++) {
+	// 			// 	int row = i / width + 1;
+	// 			// 	if (i < high - width/2)
+	// 			// 		swap(px[i], px[high-(i-(row-1)*width)-1]);
+	// 			// }
+	// 			int index = low;
+	// 			int filter_size = gfilter.length * gfilter[0].length;
+	// 			for (int k = 0; k < width; k++) {
+	// 				double tmp_R;
+	// 				double tmp_G;
+	// 				double tmp_B;
+	// 				for (int i = 0; i < gfilter.length; i++) {
+	// 					for (int j = 0; j < gfilter[0].length; j++) {
+	// 						int clamping = (filter_size/2)+i+j;
+	// 						// first row
+	// 						if (high == width)
+	// 							clamping = 0;
+	// 						// last row
+	// 						if (high == width*height)
+	// 							clamp
+	// 							clamping = width-1;
+	// 						tmp_R += gfilter[i][j]*px[index-clamping].R;
+	// 						tmp_G += gfilter[i][j]*px[index-clamping].G;
+	// 						tmp_B += gfilter[i][j]*px[index-clamping].B;
+	// 					}
+	// 				}
+	// 				int gauss_R = (int)Math.round(tmp_R);
+	// 				int gauss_G = (int)Math.round(tmp_G);
+	// 				int gauss_B = (int)Math.round(tmp_B);
+	// 				row[k].R = gauss_R;
+	// 				row[k].G = gauss_G;
+	// 				row[k].B = gauss_B;
+	// 				index++;
+	// 			}
+	// 			return row;
+	// 		}
+	// 	}
+	// }
+
 	// implement using Java's Fork/Join library
-    public PPMImage gaussianBlur(int radius, double sigma) {
-		throw new ImplementMe();
-    }
+    // public PPMImage gaussianBlur(int radius, double sigma) {
+		// // set wt, ht, mt
+  //   	int wt = this.width;
+  //   	int ht = this.height;
+  //   	int mt = this.maxColorVal;
+  //   	// avoid pass by reference error - go through and copy RGB individually
+  //   	RGB[] px = Arrays.stream(pixels)
+  //   		.parallel()
+  //   		.map(pi -> new RGB(pi.R, pi.G, pi.B))
+  //   		.toArray(RGB[]::new);
+  //   	// use fork / join to create the new RGB pixels array p
+  //   	double[][] gfilter = new Gaussian(radius, sigma).gaussianFilter;
+  //   	RGB[] p = new GaussianTask(px, 0, wt*ht, wt, ht, gfilter).compute();
+  //   	return new PPMImage(wt, ht, mt, p);
+    // }
 
 }
 
