@@ -197,9 +197,9 @@ class PPMImage {
 				// int mid = (height / 2) * width;
 				int mid = low + width;
 				MirrorTask left = 
-					new MirrorTask(px, low, mid, width, 1);
+					new MirrorTask(px, low, mid, width, height);
 				MirrorTask right = 
-					new MirrorTask(px, mid, high, width, height-1);
+					new MirrorTask(px, mid, high, width, height);
 				left.fork(); // fork them both
 				RGB[] l2 = right.compute(); // join is synchronization
 				RGB[] l1 = left.join();
