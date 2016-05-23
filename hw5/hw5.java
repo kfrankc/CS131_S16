@@ -290,9 +290,9 @@ class PPMImage {
 				// int mid = (height / 2) * width;
 				int mid = low + width;
 				GaussianTask left = 
-					new GaussianTask(px, low, mid, width, 1, gfilter, radius);
+					new GaussianTask(px, low, mid, width, height, gfilter, radius);
 				GaussianTask right = 
-					new GaussianTask(px, mid, high, width, height-1, gfilter, radius);
+					new GaussianTask(px, mid, high, width, height, gfilter, radius);
 				left.fork(); // fork them both
 				RGB[] l2 = right.compute(); // join is synchronization
 				RGB[] l1 = left.join();
@@ -315,25 +315,28 @@ class PPMImage {
 						for (int fj = 0; fj < gfilter.length; fj++) {
 							int index = (i+ri)*width + (j+rj);
 							// check index for out of bounds
+							if ((i+ri < 0 || i+ri >= height) && j+rj >= 0 && j+rj < width)
+								index = i*width + (j+rj);
+							else if ((j+rj < 0 || j+rj >= width) && i+ri >= 0 && i+ri < height)
+								index = (i+ri)*width + j;
 							// diagonals:
-							if ((index < 0 || index >= width*height) && (ri == rj || ri == -rj))
+							else if (((i+ri < 0 || i+ri >= height) && (j+rj < 0 || j+rj >= width)) && (ri == rj || ri == -rj))
 								index = i*width + j;
 							// if ((i+ri < 0 && j+rj < 0) || (i+ri >= height && j+rj >= width))
 							// 	index = i*width + j;
 							// two checks for top & bottom; left & right
-							if ((index < 0 || index >= width*height) && (ri != rj))
+							else if (((i+ri < 0 || i+ri >= height) && (j+rj < 0 || j+rj >= width)) && (ri != rj))
 								index = i*width + j;
-							if ((i+ri < 0 || i+ri >= height) && j+rj >= 0 && j+rj < width)
-								index = i*width + (j+rj);
-							if ((j+rj < 0 || j+rj >= width) && i+ri >= 0 && i+ri < height)
-								index = (i+ri)*width + j;
 							tmp_R += gfilter[fi][fj]*px[index].R;
 							tmp_G += gfilter[fi][fj]*px[index].G;
 							tmp_B += gfilter[fi][fj]*px[index].B;
+							// System.out.println("index for i=" + i + "; k=" + k + " (" + fi + "," + fj + "): " + index);
+							// System.out.println("tmp_R for " + "(" + fi + "," + fj + "): " + tmp_R);
 							rj++;
 						}
 						ri++;
 					}
+					// System.out.println("tmpR: " + tmp_R);
 					int gauss_R = (int)Math.round(tmp_R);
 					int gauss_G = (int)Math.round(tmp_G);
 					int gauss_B = (int)Math.round(tmp_B);
@@ -360,10 +363,22 @@ class PPMImage {
     		.toArray(RGB[]::new);
     	// use fork / join to create the new RGB pixels array p
     	double[][] gfilter = new Gaussian().gaussianFilter(radius, sigma);
+    	// printGaussian(gfilter);
     	RGB[] p = new GaussianTask(px, 0, wt*ht, wt, ht, gfilter, radius).compute();
     	return new PPMImage(wt, ht, mt, p);
     }
-
+    // TODO: take out
+    public void printGaussian(double[][] gfilter) {
+    	System.out.println("Gaussian Filter");
+    	for (int i = 0; i < gfilter[0].length; i++) {
+    		System.out.print("(");
+    		for (int j = 0; j < gfilter.length; j++) {
+    			System.out.print(gfilter[i][j] + ",");
+    		}
+    		System.out.println(")");
+    	}
+    }
+    // TODO: take out
     public void print() {
     	int iter = 0;
     	for (int j = 0; j < height; j++) {
@@ -412,41 +427,47 @@ class Test {
 		try {
 			// sample image testing
 			PPMImage img1 = new PPMImage(s1);
-			// PPMImage neg_img1 = img1.negate();
-			// PPMImage gray_img1 = img1.greyscale();
-			// PPMImage mirror_img1_1 = img1.mirrorImage();
-			// PPMImage mirror_img1_2 = img1.mirrorImage2();
-			// PPMImage gaussian1 = img1.gaussianBlur(10, 10.0);
-			// img1.toFile("original_1.ppm");
-			// neg_img1.toFile("neg_1.ppm");
-			// mirror_img1_1.toFile("mirror_1_1.ppm");
-			// mirror_img1_2.toFile("mirror_1_2.ppm");
-			// gaussian1.toFile("gaussian_1.ppm");
+			PPMImage neg_img1 = img1.negate();
+			PPMImage grey_img1 = img1.greyscale();
+			PPMImage mirror_img1_1 = img1.mirrorImage();
+			PPMImage mirror_img1_2 = img1.mirrorImage2();
+			PPMImage gaussian1 = img1.gaussianBlur(20, 3.0);
+			img1.toFile("original_1.ppm");
+			neg_img1.toFile("neg_1.ppm");
+			grey_img1.toFile("grey_1.ppm");
+			mirror_img1_1.toFile("mirror_1_1.ppm");
+			mirror_img1_2.toFile("mirror_1_2.ppm");
+			gaussian1.toFile("gaussian_1.ppm");
 
 			// small image testing 
-			RGB p1 = new RGB(0,0,0);
-			RGB p2 = new RGB(1,2,3);
-			RGB p3 = new RGB(4,5,6);
-			RGB p4 = new RGB(7,7,7);
-			RGB[] px = {p1, p2, p3, p4};
-			PPMImage img2 = new PPMImage(2, 2, 7, px);
-			PPMImage neg_img2 = img2.negate();
-			PPMImage grey_img2 = img2.greyscale();
-			PPMImage mirror_img2_1 = img2.mirrorImage();
-			PPMImage mirror_img2_2 = img2.mirrorImage2();
-			PPMImage gaussian2 = img2.gaussianBlur(1, 2.0);
-			System.out.println("original");
-			img2.print();
-			System.out.println("negate");
-			neg_img2.print();
-			System.out.println("greyscale");
-			grey_img2.print();
-			System.out.println("mirror1");
-			mirror_img2_1.print();
-			System.out.println("mirror2");
-			mirror_img2_2.print();
-			System.out.println("gaussian");
-			gaussian2.print();
+			// RGB p1 = new RGB(0,0,0);
+			// RGB p2 = new RGB(1,2,3);
+			// RGB p3 = new RGB(4,5,6);
+			// RGB p4 = new RGB(7,7,7);
+			// // basic testing
+			// // RGB p1 = new RGB(0,0,0);
+			// // RGB p2 = new RGB(0,0,0);
+			// // RGB p3 = new RGB(1,0,0);
+			// // RGB p4 = new RGB(0,0,0);
+			// RGB[] px = {p1, p2, p3, p4};
+			// PPMImage img2 = new PPMImage(2, 2, 7, px);
+			// PPMImage neg_img2 = img2.negate();
+			// PPMImage grey_img2 = img2.greyscale();
+			// PPMImage mirror_img2_1 = img2.mirrorImage();
+			// PPMImage mirror_img2_2 = img2.mirrorImage2();
+			// PPMImage gaussian2 = img2.gaussianBlur(1, 2.0);
+			// System.out.println("original");
+			// img2.print();
+			// System.out.println("negate");
+			// neg_img2.print();
+			// System.out.println("greyscale");
+			// grey_img2.print();
+			// System.out.println("mirror1");
+			// mirror_img2_1.print();
+			// System.out.println("mirror2");
+			// mirror_img2_2.print();
+			// System.out.println("gaussian");
+			// gaussian2.print();
 
 		} catch(FileNotFoundException e1) {
 			System.out.println("ERROR: can't find file.");
