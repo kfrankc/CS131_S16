@@ -5,7 +5,11 @@
    Others With Whom I Discussed Things:
 
    Other Resources I Consulted:
-   
+   https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html
+   http://www.oracle.com/technetwork/articles/java/ma14-java-se-8-streams-2177646.html
+   http://homes.cs.washington.edu/~djg/teachingMaterials/grossmanSPAC_forkJoinFramework.html
+   https://docs.oracle.com/javase/tutorial/essential/concurrency/forkjoin.html
+   Professor Millstein Lecture Notes Week 7 Monday, Wednesday; Week 8 Monday
 */
 
 import java.io.*;
