@@ -372,28 +372,28 @@ class PPMImage {
     	RGB[] p = new GaussianTask(px, 0, wt*ht, wt, ht, gfilter, radius).compute();
     	return new PPMImage(wt, ht, mt, p);
     }
-    // TODO: take out
-    public void printGaussian(double[][] gfilter) {
-    	System.out.println("Gaussian Filter");
-    	for (int i = 0; i < gfilter[0].length; i++) {
-    		System.out.print("(");
-    		for (int j = 0; j < gfilter.length; j++) {
-    			System.out.print(gfilter[i][j] + ",");
-    		}
-    		System.out.println(")");
-    	}
-    }
-    // TODO: take out
-    public void print() {
-    	int iter = 0;
-    	for (int j = 0; j < height; j++) {
-			for (int i = 0; i < width; i++) {
-				System.out.print("(" + pixels[iter].R + "," + pixels[iter].G + "," + pixels[iter].B + ")" + ";");
-				iter++;
-			}
-			System.out.println("");
-		}
-    }
+  //   // TODO: take out
+  //   public void printGaussian(double[][] gfilter) {
+  //   	System.out.println("Gaussian Filter");
+  //   	for (int i = 0; i < gfilter[0].length; i++) {
+  //   		System.out.print("(");
+  //   		for (int j = 0; j < gfilter.length; j++) {
+  //   			System.out.print(gfilter[i][j] + ",");
+  //   		}
+  //   		System.out.println(")");
+  //   	}
+  //   }
+  //   // TODO: take out
+  //   public void print() {
+  //   	int iter = 0;
+  //   	for (int j = 0; j < height; j++) {
+		// 	for (int i = 0; i < width; i++) {
+		// 		System.out.print("(" + pixels[iter].R + "," + pixels[iter].G + "," + pixels[iter].B + ")" + ";");
+		// 		iter++;
+		// 	}
+		// 	System.out.println("");
+		// }
+  //   }
 
 }
 
@@ -432,28 +432,28 @@ class Test {
 		try {
 			// sample image testing
 			PPMImage img1 = new PPMImage(s1);
-			PPMImage neg_img1 = img1.negate();
-			PPMImage grey_img1 = img1.greyscale();
-			PPMImage mirror_img1_1 = img1.mirrorImage();
-			PPMImage mirror_img1_2 = img1.mirrorImage2();
-			PPMImage gaussian1 = img1.gaussianBlur(20, 3.0);
-			img1.toFile("original_1.ppm");
-			neg_img1.toFile("neg_1.ppm");
-			grey_img1.toFile("grey_1.ppm");
-			mirror_img1_1.toFile("mirror_1_1.ppm");
-			mirror_img1_2.toFile("mirror_1_2.ppm");
-			gaussian1.toFile("gaussian_1.ppm");
+			// PPMImage neg_img1 = img1.negate();
+			// PPMImage grey_img1 = img1.greyscale();
+			// PPMImage mirror_img1_1 = img1.mirrorImage();
+			// PPMImage mirror_img1_2 = img1.mirrorImage2();
+			// PPMImage gaussian1 = img1.gaussianBlur(60, 3.0);
+			// img1.toFile("original_1.ppm");
+			// neg_img1.toFile("neg_1.ppm");
+			// grey_img1.toFile("grey_1.ppm");
+			// mirror_img1_1.toFile("mirror_1_1.ppm");
+			// mirror_img1_2.toFile("mirror_1_2.ppm");
+			// gaussian1.toFile("gaussian_12.ppm");
 
 			// small image testing 
 			// RGB p1 = new RGB(0,0,0);
 			// RGB p2 = new RGB(1,2,3);
 			// RGB p3 = new RGB(4,5,6);
 			// RGB p4 = new RGB(7,7,7);
-			// // basic testing
-			// // RGB p1 = new RGB(0,0,0);
-			// // RGB p2 = new RGB(0,0,0);
-			// // RGB p3 = new RGB(1,0,0);
-			// // RGB p4 = new RGB(0,0,0);
+			// basic testing
+			// RGB p1 = new RGB(0,0,0);
+			// RGB p2 = new RGB(0,0,0);
+			// RGB p3 = new RGB(1,0,0);
+			// RGB p4 = new RGB(0,0,0);
 			// RGB[] px = {p1, p2, p3, p4};
 			// PPMImage img2 = new PPMImage(2, 2, 7, px);
 			// PPMImage neg_img2 = img2.negate();
