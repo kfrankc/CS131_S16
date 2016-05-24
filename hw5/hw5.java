@@ -10,6 +10,7 @@
    http://homes.cs.washington.edu/~djg/teachingMaterials/grossmanSPAC_forkJoinFramework.html
    https://docs.oracle.com/javase/tutorial/essential/concurrency/forkjoin.html
    Professor Millstein Lecture Notes Week 7 Monday, Wednesday; Week 8 Monday
+   Sample Piazza test cases posted by students
 */
 
 import java.io.*;
@@ -478,5 +479,100 @@ class Test {
 		} catch(IOException e2) {
 			System.out.println("ERROR: can't find file.");
 		}
+    }
+}
+
+class Main {
+    public static void main(String[] args)
+    {
+        try
+        {
+            PPMImage tester = new PPMImage("florence.ppm");
+            PPMImage testerNegated = tester.negate();
+            try
+            {
+                testerNegated.toFile("florenceNegated.ppm");
+            }
+            catch(Exception e)
+            {
+                System.out.println("There was an error in generating the negated image!");
+            }
+
+            PPMImage testerNegatedTwice = testerNegated.negate();
+            try
+            {
+                testerNegatedTwice.toFile("florenceNegatedTwice.ppm");
+            }
+            catch(Exception e)
+            {
+                System.out.println("There was an error in generating the doubly negated image!");
+            }
+
+            PPMImage testerGreyscaled = tester.greyscale();
+            try
+            {
+                testerGreyscaled.toFile("florenceGreyscaled.ppm");
+            }
+            catch(Exception e)
+            {
+                System.out.println("There was an error in generating the greyscaled image!");
+            }
+
+            PPMImage testerGreyscaledTwice = testerGreyscaled.greyscale();
+            try
+            {
+                testerGreyscaledTwice.toFile("florenceGreyscaledTwice.ppm");
+            }
+            catch (Exception e)
+            {
+                System.out.println("There was an error in generating the doubly greyscaled image!");
+            }
+
+            PPMImage testerMirrored = tester.mirrorImage();
+            try
+            {
+                testerMirrored.toFile("florenceMirrored.ppm");
+            }
+            catch(Exception e)
+            {
+                System.out.println("There was an error in generating the mirrored image!");
+            }
+            
+            PPMImage testerMirroredTwice = testerMirrored.mirrorImage();
+            try
+            {
+                testerMirroredTwice.toFile("florenceMirroredTwice.ppm");
+            }
+            catch(Exception e)
+            {
+                System.out.println("There was an error in generating the doubly mirrored image!");
+            }
+
+            PPMImage testerMirrored2 = tester.mirrorImage2();
+            try
+            {
+                testerMirrored2.toFile("florenceMirrored2.ppm");
+            }
+            catch(Exception e)
+            {
+                System.out.println("There was an error in generating the mirrored image using the stream method!");
+            }
+
+            PPMImage testerMirrored2Twice = testerMirrored2.mirrorImage2();
+            try 
+            {
+                testerMirrored2Twice.toFile("florenceMirrored2Twice.ppm");
+            }
+            catch (Exception e)
+            {
+                System.out.println("There was an error in generating the doubly mirrored image using the stream method!");
+            }         
+        }
+        catch(Exception e)
+        {
+            System.out.println("Oh no! An exception has occurred.");
+        }
+
+
     }
 }
