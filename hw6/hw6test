@@ -1,0 +1,5 @@
+consult(hw6).
+findall(Y, duplist([1,2,3], Y), L), L = [[1,1,2,2,3,3]].
+findall(X, duplist(X, [1,1,2,2,3,3]), L), L = [[1,2,3]].
+findall(X, subseq(X, [1,2]), L), L = [[],[1],[1,2],[2]].
+findall(X, verbalarithmetic([S,E,N,D,M,O,R,Y],[S,E,N,D],[M,O,R,E],[M,O,N,E,Y]), L), L = [[]].

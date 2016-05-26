@@ -426,153 +426,153 @@ class Gaussian {
     }
 }
 
-class Test {
-	public static void main (String [] args) {
-		String s1 = "/Users/frankchen/Desktop/CS131_S16/hw5/florence.ppm";
-		try {
-			// sample image testing
-			PPMImage img1 = new PPMImage(s1);
-			// PPMImage neg_img1 = img1.negate();
-			// PPMImage grey_img1 = img1.greyscale();
-			// PPMImage mirror_img1_1 = img1.mirrorImage();
-			// PPMImage mirror_img1_2 = img1.mirrorImage2();
-			// PPMImage gaussian1 = img1.gaussianBlur(60, 3.0);
-			// img1.toFile("original_1.ppm");
-			// neg_img1.toFile("neg_1.ppm");
-			// grey_img1.toFile("grey_1.ppm");
-			// mirror_img1_1.toFile("mirror_1_1.ppm");
-			// mirror_img1_2.toFile("mirror_1_2.ppm");
-			// gaussian1.toFile("gaussian_12.ppm");
+// class Test {
+// 	public static void main (String [] args) {
+// 		String s1 = "/Users/frankchen/Desktop/CS131_S16/hw5/florence.ppm";
+// 		try {
+// 			// sample image testing
+// 			PPMImage img1 = new PPMImage(s1);
+// 			// PPMImage neg_img1 = img1.negate();
+// 			// PPMImage grey_img1 = img1.greyscale();
+// 			// PPMImage mirror_img1_1 = img1.mirrorImage();
+// 			// PPMImage mirror_img1_2 = img1.mirrorImage2();
+// 			// PPMImage gaussian1 = img1.gaussianBlur(60, 3.0);
+// 			// img1.toFile("original_1.ppm");
+// 			// neg_img1.toFile("neg_1.ppm");
+// 			// grey_img1.toFile("grey_1.ppm");
+// 			// mirror_img1_1.toFile("mirror_1_1.ppm");
+// 			// mirror_img1_2.toFile("mirror_1_2.ppm");
+// 			// gaussian1.toFile("gaussian_12.ppm");
 
-			// small image testing 
-			// RGB p1 = new RGB(0,0,0);
-			// RGB p2 = new RGB(1,2,3);
-			// RGB p3 = new RGB(4,5,6);
-			// RGB p4 = new RGB(7,7,7);
-			// basic testing
-			// RGB p1 = new RGB(0,0,0);
-			// RGB p2 = new RGB(0,0,0);
-			// RGB p3 = new RGB(1,0,0);
-			// RGB p4 = new RGB(0,0,0);
-			// RGB[] px = {p1, p2, p3, p4};
-			// PPMImage img2 = new PPMImage(2, 2, 7, px);
-			// PPMImage neg_img2 = img2.negate();
-			// PPMImage grey_img2 = img2.greyscale();
-			// PPMImage mirror_img2_1 = img2.mirrorImage();
-			// PPMImage mirror_img2_2 = img2.mirrorImage2();
-			// PPMImage gaussian2 = img2.gaussianBlur(1, 2.0);
-			// System.out.println("original");
-			// img2.print();
-			// System.out.println("negate");
-			// neg_img2.print();
-			// System.out.println("greyscale");
-			// grey_img2.print();
-			// System.out.println("mirror1");
-			// mirror_img2_1.print();
-			// System.out.println("mirror2");
-			// mirror_img2_2.print();
-			// System.out.println("gaussian");
-			// gaussian2.print();
+// 			// small image testing 
+// 			// RGB p1 = new RGB(0,0,0);
+// 			// RGB p2 = new RGB(1,2,3);
+// 			// RGB p3 = new RGB(4,5,6);
+// 			// RGB p4 = new RGB(7,7,7);
+// 			// basic testing
+// 			// RGB p1 = new RGB(0,0,0);
+// 			// RGB p2 = new RGB(0,0,0);
+// 			// RGB p3 = new RGB(1,0,0);
+// 			// RGB p4 = new RGB(0,0,0);
+// 			// RGB[] px = {p1, p2, p3, p4};
+// 			// PPMImage img2 = new PPMImage(2, 2, 7, px);
+// 			// PPMImage neg_img2 = img2.negate();
+// 			// PPMImage grey_img2 = img2.greyscale();
+// 			// PPMImage mirror_img2_1 = img2.mirrorImage();
+// 			// PPMImage mirror_img2_2 = img2.mirrorImage2();
+// 			// PPMImage gaussian2 = img2.gaussianBlur(1, 2.0);
+// 			// System.out.println("original");
+// 			// img2.print();
+// 			// System.out.println("negate");
+// 			// neg_img2.print();
+// 			// System.out.println("greyscale");
+// 			// grey_img2.print();
+// 			// System.out.println("mirror1");
+// 			// mirror_img2_1.print();
+// 			// System.out.println("mirror2");
+// 			// mirror_img2_2.print();
+// 			// System.out.println("gaussian");
+// 			// gaussian2.print();
 
-		} catch(FileNotFoundException e1) {
-			System.out.println("ERROR: can't find file.");
-		} catch(IOException e2) {
-			System.out.println("ERROR: can't find file.");
-		}
-    }
-}
+// 		} catch(FileNotFoundException e1) {
+// 			System.out.println("ERROR: can't find file.");
+// 		} catch(IOException e2) {
+// 			System.out.println("ERROR: can't find file.");
+// 		}
+//     }
+// }
 
-class Main {
-    public static void main(String[] args)
-    {
-        try
-        {
-            PPMImage tester = new PPMImage("florence.ppm");
-            PPMImage testerNegated = tester.negate();
-            try
-            {
-                testerNegated.toFile("florenceNegated.ppm");
-            }
-            catch(Exception e)
-            {
-                System.out.println("There was an error in generating the negated image!");
-            }
+// class Main {
+//     public static void main(String[] args)
+//     {
+//         try
+//         {
+//             PPMImage tester = new PPMImage("florence.ppm");
+//             PPMImage testerNegated = tester.negate();
+//             try
+//             {
+//                 testerNegated.toFile("florenceNegated.ppm");
+//             }
+//             catch(Exception e)
+//             {
+//                 System.out.println("There was an error in generating the negated image!");
+//             }
 
-            PPMImage testerNegatedTwice = testerNegated.negate();
-            try
-            {
-                testerNegatedTwice.toFile("florenceNegatedTwice.ppm");
-            }
-            catch(Exception e)
-            {
-                System.out.println("There was an error in generating the doubly negated image!");
-            }
+//             PPMImage testerNegatedTwice = testerNegated.negate();
+//             try
+//             {
+//                 testerNegatedTwice.toFile("florenceNegatedTwice.ppm");
+//             }
+//             catch(Exception e)
+//             {
+//                 System.out.println("There was an error in generating the doubly negated image!");
+//             }
 
-            PPMImage testerGreyscaled = tester.greyscale();
-            try
-            {
-                testerGreyscaled.toFile("florenceGreyscaled.ppm");
-            }
-            catch(Exception e)
-            {
-                System.out.println("There was an error in generating the greyscaled image!");
-            }
+//             PPMImage testerGreyscaled = tester.greyscale();
+//             try
+//             {
+//                 testerGreyscaled.toFile("florenceGreyscaled.ppm");
+//             }
+//             catch(Exception e)
+//             {
+//                 System.out.println("There was an error in generating the greyscaled image!");
+//             }
 
-            PPMImage testerGreyscaledTwice = testerGreyscaled.greyscale();
-            try
-            {
-                testerGreyscaledTwice.toFile("florenceGreyscaledTwice.ppm");
-            }
-            catch (Exception e)
-            {
-                System.out.println("There was an error in generating the doubly greyscaled image!");
-            }
+//             PPMImage testerGreyscaledTwice = testerGreyscaled.greyscale();
+//             try
+//             {
+//                 testerGreyscaledTwice.toFile("florenceGreyscaledTwice.ppm");
+//             }
+//             catch (Exception e)
+//             {
+//                 System.out.println("There was an error in generating the doubly greyscaled image!");
+//             }
 
-            PPMImage testerMirrored = tester.mirrorImage();
-            try
-            {
-                testerMirrored.toFile("florenceMirrored.ppm");
-            }
-            catch(Exception e)
-            {
-                System.out.println("There was an error in generating the mirrored image!");
-            }
+//             PPMImage testerMirrored = tester.mirrorImage();
+//             try
+//             {
+//                 testerMirrored.toFile("florenceMirrored.ppm");
+//             }
+//             catch(Exception e)
+//             {
+//                 System.out.println("There was an error in generating the mirrored image!");
+//             }
             
-            PPMImage testerMirroredTwice = testerMirrored.mirrorImage();
-            try
-            {
-                testerMirroredTwice.toFile("florenceMirroredTwice.ppm");
-            }
-            catch(Exception e)
-            {
-                System.out.println("There was an error in generating the doubly mirrored image!");
-            }
+//             PPMImage testerMirroredTwice = testerMirrored.mirrorImage();
+//             try
+//             {
+//                 testerMirroredTwice.toFile("florenceMirroredTwice.ppm");
+//             }
+//             catch(Exception e)
+//             {
+//                 System.out.println("There was an error in generating the doubly mirrored image!");
+//             }
 
-            PPMImage testerMirrored2 = tester.mirrorImage2();
-            try
-            {
-                testerMirrored2.toFile("florenceMirrored2.ppm");
-            }
-            catch(Exception e)
-            {
-                System.out.println("There was an error in generating the mirrored image using the stream method!");
-            }
+//             PPMImage testerMirrored2 = tester.mirrorImage2();
+//             try
+//             {
+//                 testerMirrored2.toFile("florenceMirrored2.ppm");
+//             }
+//             catch(Exception e)
+//             {
+//                 System.out.println("There was an error in generating the mirrored image using the stream method!");
+//             }
 
-            PPMImage testerMirrored2Twice = testerMirrored2.mirrorImage2();
-            try 
-            {
-                testerMirrored2Twice.toFile("florenceMirrored2Twice.ppm");
-            }
-            catch (Exception e)
-            {
-                System.out.println("There was an error in generating the doubly mirrored image using the stream method!");
-            }         
-        }
-        catch(Exception e)
-        {
-            System.out.println("Oh no! An exception has occurred.");
-        }
+//             PPMImage testerMirrored2Twice = testerMirrored2.mirrorImage2();
+//             try 
+//             {
+//                 testerMirrored2Twice.toFile("florenceMirrored2Twice.ppm");
+//             }
+//             catch (Exception e)
+//             {
+//                 System.out.println("There was an error in generating the doubly mirrored image using the stream method!");
+//             }         
+//         }
+//         catch(Exception e)
+//         {
+//             System.out.println("Oh no! An exception has occurred.");
+//         }
 
 
-    }
-}
+//     }
+// }
