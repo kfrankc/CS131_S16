@@ -1,5 +1,7 @@
 consult(hw6).
 findall(Y, duplist([1,2,3], Y), L), L = [[1,1,2,2,3,3]].
 findall(X, duplist(X, [1,1,2,2,3,3]), L), L = [[1,2,3]].
-findall(X, subseq(X, [1,2]), L), L = [[],[1],[1,2],[2]].
-findall(X, verbalarithmetic([S,E,N,D,M,O,R,Y],[S,E,N,D],[M,O,R,E],[M,O,N,E,Y]), L), L = [[]].
+findall(X, subseq(X, [1,2]), L), findall(L, permutation(L, [[],[1],[2],[1,2]]), Y).
+findall(X, verbalarithmetic([S,E,N,D,M,O,R,Y],[S,E,N,D],[M,O,R,E],[M,O,N,E,Y]), L).
+findall(X, verbalarithmetic([C,O,A,L,S,I],[C,O,C,A],[C,O,L,A],[O,A,S,I,S]), L).
+findall(X, verbalarithmetic([P,L,A,Y,S,W,E,B,T,R],[P,L,A,Y,S],[W,E,L,L],[B,E,T,T,E,R]), L).
