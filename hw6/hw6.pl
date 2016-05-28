@@ -44,7 +44,8 @@ add(A, B, CarryOver, 0, LeftOver) :-
  * @param arg3 word3
  * @param arg4 carry over from addition
 */
-compute([], [], [H], CarryOver) :- CarryOver =:= H.
+compute([], [], [H], CarryOver) :- 
+	CarryOver =:= H.
 compute([H1|T1], [], [H3|T3], CarryOver) :- 
 	add(H1, 0, CarryOver, Tens, Ones),
 	Ones =:= H3,
