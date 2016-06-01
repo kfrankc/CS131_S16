@@ -1,0 +1,23 @@
+EARTH+SATURN=TRITON
+EARTHSUNIO
+verbalarithmetic([E,A,R,T,H,S,U,N,I,O],[E,A,R,T,H],[S,A,T,U,R,N],[T,R,I,T,O,N]).
+
+EUROPA+JUPITER=NEPTUNE
+verbalarithmetic([E,U,R,O,P,A,J,I,T,N],[E,U,R,O,P,A],[J,U,P,I,T,E,R],[N,E,P,T,U,N,E]).
+
+APPLES + GRAPES = CHERRY
+verbalarithmetic([A,P,L,E,S,G,R,C,H,Y],[A,P,P,L,E,S],[G,R,A,P,E,S],[C,H,E,R,R,Y]).
+
+BANJO+VIOLA=VIOLIN,
+
+verbalarithmetic([B,A,N,J,O,V,I,L],[B,A,N,J,O],[V,I,O,L,A],[V,I,O,L,I,N]).
+
+BLACK+GREEN=ORANGE
+
+verbalarithmetic([B,L,A,C,K,G,R,E,N,O],[B,L,A,C,K],[G,R,E,E,N],[O,R,A,N,G,E]).
+
+BROWN+YELLOW=PURPLE
+verbalarithmetic([B,R,O,W,N,Y,E,L,P,U],[B,R,O,W,N],[Y,E,L,L,O,W],[P,U,R,P,L,E]).
+
+BROWN+PINK=IVORY
+verbalarithmetic([B,R,O,W,N,P,I,K,V,Y],[B,R,O,W,N],[P,I,N,K],[I,V,O,R,Y]).
