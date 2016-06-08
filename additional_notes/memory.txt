@@ -1,0 +1,95 @@
+
+
+Set s = new ListSet(); 
+// s is on the stack
+   the new object, call it o, is on the heap
+   s is a pointer to the new object
+
+s.add("hi");
+// dereferences s and updates the object o
+   to contain the "hi" value
+
+Set s2 = s;
+// s2 now points to o
+// s and s2 are *aliases*
+
+s2.remove("hi");
+// now o no longer contains "hi"
+
+
+Parameter passing:
+
+In Java, parameter passing is by value:
+  the value of the actual parameter is copied
+  into the formal parameter
+
+But the values are always pointers (except for
+primitives).
+
+key property: the value of the actual parameter
+cannot be changed by the function call
+
+int plus(int a, int b) {
+	a += b;
+	return a;
+}
+
+void f() {
+	int x = 3;
+	int y = 4;
+	int z = plus(x,y);
+}
+
+-----
+
+class Integer {
+	int i;
+	Integer(int val) { this.i = val; }
+}
+
+Integer plus(Integer a, Integer b) {
+	a = new Integer(a.i + b.i);
+	return a;
+}
+
+Integer x = new Integer(3);
+Integer y = new Integer(4);
+Integer z = plus(x,y);
+// x still points to the original object 
+// that it pointed to, with value 3
+
+-----
+
+Integer plus(Integer a, Integer b) {
+	a.i += b.i;
+	return a;
+}
+// if we do the same as before,
+// after the call:
+// x and z point to the original object 
+// that x pointed to.
+// but it now has the value 7
+
+-------
+
+Call by reference in C++ (not in Java):
+
+you make the actual and formal parameters 
+be aliases of each other
+
+int plus(int& a, int& b) {
+	a +=b;
+	return a;
+}
+
+void f() {
+	int x = 3;
+	int y = 4;
+	int z = plus(x,y);
+}
+// the call makes a alias the stack location for x, and similarly for b and y.
+therefore the update to a has the effect of
+also updating the value of x to 7.
+
+
+
